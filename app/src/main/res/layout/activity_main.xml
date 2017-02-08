@@ -10,10 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.divyanshu.swipebutton.swipebuttonsample.MainActivity">
 
-    <TextView
+    <com.divyanshu.swipebutton.swipebutton.SwipeButton
         android:id="@+id/km_label"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
 </RelativeLayout>
