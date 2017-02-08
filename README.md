@@ -14,8 +14,6 @@ add this in your porject `build.gradle` file
 
 and than in your module `build.gradle` file where you add the dependencies add this 
 
-```
-dependencies {
-	        compile 'com.github.divyanshunegi:SwipeButton:v1.0'
-	}
-```
+```dependencies {
+	        compile "com.github.divyanshunegi:SwipeButton:v1.0"
+	}```
