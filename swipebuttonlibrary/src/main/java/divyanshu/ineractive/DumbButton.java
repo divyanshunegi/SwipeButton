@@ -1,48 +1,49 @@
-package com.divyanshu.swipebutton.swipebutton;
+package divyanshu.ineractive;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.widget.Button;
+
+import com.divyanshu.swipebutton.swipebutton.R;
+
+import divyanshu.ineractive.custom_view.PolygonalDrwable;
+
+import static android.R.attr.drawableLeft;
 
 /**
  * Created by divyanshunegi on 2/8/17.
  * Project : SwipeButtonSample
  */
-public class SwipeButton extends Button {
+public class DumbButton extends AppCompatButton {
     private StateListDrawable mNormalDrawable;
     private String mNormalText;
     private float cornerRadius;
 
-    public SwipeButton(Context context) {
+    public DumbButton(Context context) {
         super(context);
         init(context,null);
     }
 
-    public SwipeButton(Context context, AttributeSet attrs) {
+    public DumbButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context,attrs);
     }
 
-    public SwipeButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DumbButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context,attrs);
 
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public SwipeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
-    }
-
 
     private void init(Context context, AttributeSet attrs) {
         mNormalDrawable = new StateListDrawable();
@@ -66,21 +67,20 @@ public class SwipeButton extends Button {
         } else {
             setBackgroundDrawable(mNormalDrawable);
         }
-        setPadding(pL, pT, pR, pB);
+        setPadding(pL+100, pT, pR, pB);
 
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
 
-        TypedArray attr = getTypedArray(context, attrs, R.styleable.SwipeButton);
+        TypedArray attr = getTypedArray(context, attrs, R.styleable.DumbButton);
         if (attr == null) {
             return;
         }
-
         try {
 
             float defValue = getDimension(R.dimen.corner_radius);
-            cornerRadius = attr.getDimension(R.styleable.SwipeButton_pb_colorPressed, defValue);
+            cornerRadius = attr.getDimension(R.styleable.DumbButton_cornerRadius, defValue);
 
             mNormalDrawable.addState(new int[]{android.R.attr.state_pressed},
                     createPressedDrawable(attr));
@@ -110,7 +110,7 @@ public class SwipeButton extends Button {
         drawablePressed.setCornerRadius(getCornerRadius());
 
         int blueDark = getColor(R.color.blue_pressed);
-        int colorPressed = attr.getColor(R.styleable.SwipeButton_pb_colorPressed, blueDark);
+        int colorPressed = attr.getColor(R.styleable.DumbButton_colorPressed, blueDark);
         drawablePressed.setColor(colorPressed);
 
         return drawablePressed;
@@ -128,25 +128,32 @@ public class SwipeButton extends Button {
         return cornerRadius;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private LayerDrawable createNormalDrawable(TypedArray attr) {
+
         LayerDrawable drawableNormal =
                 (LayerDrawable) getDrawable(R.drawable.rect_normal).mutate();
+
+        drawableNormal.setDrawableByLayerId(R.id.iconArrow,new PolygonalDrwable(Color.WHITE,10,100,100));
 
         GradientDrawable drawableTop =
                 (GradientDrawable) drawableNormal.getDrawable(0).mutate();
         drawableTop.setCornerRadius(getCornerRadius());
 
         int blueDark = getColor(R.color.blue_pressed);
-        int colorPressed = attr.getColor(R.styleable.SwipeButton_pb_colorPressed, blueDark);
+        int colorPressed = attr.getColor(R.styleable.DumbButton_colorPressed, blueDark);
         drawableTop.setColor(colorPressed);
 
-        GradientDrawable drawableBottom =
-                (GradientDrawable) drawableNormal.getDrawable(1).mutate();
-        drawableBottom.setCornerRadius(getCornerRadius());
+//        Drawable drawableLeft =
+//                (Drawable) drawableNormal.getDrawable(1).mutate();
+//        drawableLeft.setBounds(20,30,20,30);
+        drawableNormal.invalidateSelf();
+        //drawableLeft.setCornerRadius(getCornerRadius());
 
-        int blueNormal = getColor(R.color.blue_normal);
-        int colorNormal = attr.getColor(R.styleable.SwipeButton_pb_colorNormal, blueNormal);
-        drawableBottom.setColor(colorNormal);
+        int bluered = getColor(R.color.red_error);
+        int colorred = attr.getColor(R.styleable.DumbButton_colorPressed, bluered);
+//        drawableLeft.setColor(bluered);
+
         return drawableNormal;
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="SwipeButton">
-        <attr name="pb_colorPressed" format="color" />
-        <attr name="pb_colorNormal" format="color" />
-        <attr name="pb_cornerRadius" format="dimension" />
+    <declare-styleable name="DumbButton">
+        <attr name="colorPressed" format="color" />
+        <attr name="colorNormal" format="color" />
+        <attr name="cornerRadius" format="dimension" />
     </declare-styleable>
 
 </resources>
