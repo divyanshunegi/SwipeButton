@@ -3,8 +3,6 @@ package divyanshu.ineractive;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -13,18 +11,19 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 
 import com.divyanshu.swipebutton.swipebutton.R;
-
-import divyanshu.ineractive.custom_view.PolygonalDrwable;
-
-import static android.R.attr.drawableLeft;
 
 /**
  * Created by divyanshunegi on 2/8/17.
  * Project : SwipeButtonSample
  */
 public class DumbButton extends AppCompatButton {
+
+    private int themePrimaryColor;
+    private int themePrimaryDarkColor;
     private StateListDrawable mNormalDrawable;
     private String mNormalText;
     private float cornerRadius;
@@ -47,11 +46,17 @@ public class DumbButton extends AppCompatButton {
 
     private void init(Context context, AttributeSet attrs) {
         mNormalDrawable = new StateListDrawable();
+        setupColors(context);
         if (attrs != null) {
             initAttributes(context, attrs);
         }
         mNormalText = getText().toString();
         setBackgroundCompat(mNormalDrawable);
+    }
+
+    private void setupColors(Context context) {
+        this.themePrimaryColor = getDefaultThemeColor(context,R.attr.colorPrimary);
+        this.themePrimaryDarkColor = getDefaultThemeColor(context, R.attr.colorPrimaryDark);
     }
 
     @SuppressWarnings("deprecation")
@@ -67,8 +72,7 @@ public class DumbButton extends AppCompatButton {
         } else {
             setBackgroundDrawable(mNormalDrawable);
         }
-        setPadding(pL+100, pT, pR, pB);
-
+        setPadding(pL, pT, pR, pB);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -109,11 +113,19 @@ public class DumbButton extends AppCompatButton {
                 (GradientDrawable) getDrawable(R.drawable.rect_pressed).mutate();
         drawablePressed.setCornerRadius(getCornerRadius());
 
-        int blueDark = getColor(R.color.blue_pressed);
-        int colorPressed = attr.getColor(R.styleable.DumbButton_colorPressed, blueDark);
+        int colorPressed = attr.getColor(R.styleable.DumbButton_colorNormal, themePrimaryDarkColor);
+//        int colorPressedDefault = attr.getColor(R.styleable.DumbButton_colorNormal, themePrimaryDarkColor);
         drawablePressed.setColor(colorPressed);
 
         return drawablePressed;
+    }
+
+    private int getDefaultThemeColor(Context context,int themeColor) {
+        TypedValue typedValue = new TypedValue();
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[] { themeColor });
+        int color = a.getColor(0, 0);
+        a.recycle();
+        return color;
     }
 
     protected Drawable getDrawable(int id) {
@@ -130,28 +142,26 @@ public class DumbButton extends AppCompatButton {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private LayerDrawable createNormalDrawable(TypedArray attr) {
-
         LayerDrawable drawableNormal =
                 (LayerDrawable) getDrawable(R.drawable.rect_normal).mutate();
 
-        drawableNormal.setDrawableByLayerId(R.id.iconArrow,new PolygonalDrwable(Color.WHITE,10,100,100));
+//        drawableNormal.setDrawableByLayerId(R.id.iconArrow,new PolygonalDrwable(Color.WHITE,10,100,100));
 
         GradientDrawable drawableTop =
                 (GradientDrawable) drawableNormal.getDrawable(0).mutate();
         drawableTop.setCornerRadius(getCornerRadius());
 
-        int blueDark = getColor(R.color.blue_pressed);
-        int colorPressed = attr.getColor(R.styleable.DumbButton_colorPressed, blueDark);
+        int colorPressed = attr.getColor(R.styleable.DumbButton_colorNormal, themePrimaryColor);
         drawableTop.setColor(colorPressed);
 
 //        Drawable drawableLeft =
-//                (Drawable) drawableNormal.getDrawable(1).mutate();
+//        (Drawable) drawableNormal.getDrawable(1).mutate();
 //        drawableLeft.setBounds(20,30,20,30);
         drawableNormal.invalidateSelf();
         //drawableLeft.setCornerRadius(getCornerRadius());
 
-        int bluered = getColor(R.color.red_error);
-        int colorred = attr.getColor(R.styleable.DumbButton_colorPressed, bluered);
+//        int bluered = getColor(R.color.red_error);
+//        int colorred = attr.getColor(R.styleable.DumbButton_colorPressed, bluered);
 //        drawableLeft.setColor(bluered);
 
         return drawableNormal;

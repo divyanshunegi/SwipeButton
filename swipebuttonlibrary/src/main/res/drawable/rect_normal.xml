@@ -4,18 +4,16 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/corner_radius" />
-            <solid android:color="@color/blue_pressed" />
+            <solid android:color="?attr/colorPrimary" />
         </shape>
     </item>
 
     <!--we can add top, left ,right,bottom-->
-    <item
-        android:id="@+id/iconArrow"
-        android:drawable="@color/blue_normal">
-        <!--<shape android:shape="rectangle" >-->
-            <!--<corners android:radius="@dimen/corner_radius" />-->
-            <!--<solid android:color="@color/blue_normal" />-->
-        <!--</shape>-->
+    <item>
+        <shape android:shape="rectangle" >
+            <corners android:radius="@dimen/corner_radius" />
+            <solid android:color="?attr/colorPrimaryDark" />
+        </shape>
     </item>
 
 </layer-list>
